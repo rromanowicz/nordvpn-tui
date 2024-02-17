@@ -296,7 +296,7 @@ impl App {
     }
 
     fn render_title(&self, area: Rect, buf: &mut Buffer) {
-        Paragraph::new("Ratatui List Example")
+        Paragraph::new("NordVPN TUI")
             .bold()
             .centered()
             .render(area, buf);
