@@ -1,3 +1,4 @@
+use regex::Regex;
 use std::process::{Command, Output};
 
 #[derive(Debug)]
@@ -76,7 +77,7 @@ pub fn get_countries() -> Vec<Country> {
         .output()
         .expect("Err...");
 
-    return str_to_vec(parse_output(output), ", ".to_string())
+    return str_to_vec(parse_output(output), ",".to_string())
         .iter()
         .map(|it| Country {
             name: clean_string(it),
@@ -92,7 +93,7 @@ fn get_cities(country: &str) -> Vec<City> {
         .output()
         .expect("Err...");
 
-    return str_to_vec(parse_output(output), ", ".to_string())
+    return str_to_vec(parse_output(output), ",".to_string())
         .iter()
         .map(|it| City {
             name: clean_string(it),
@@ -149,8 +150,10 @@ fn parse_output(cmd_output: Output) -> String {
 }
 
 fn str_to_vec(input: String, separator: String) -> Vec<String> {
-    return input
-        .to_string()
+    let reg = Regex::new(r"\s+").unwrap();
+
+    return reg
+        .replace_all(&input, ",")
         .split(&separator.to_string())
         .map(|s| s.to_string())
         .collect();
